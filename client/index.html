@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>WEB-API-SCOPING</title>
+    <script
+    src="https://code.jquery.com/jquery-3.2.1.js"
+    integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+    crossorigin="anonymous"></script>
+    <style>
+      #tombol button {
+        width: 100px;
+        height: 50px;
+        font-size: 8pt;
+      }
+
+      #daftar li {
+        font-size: 15pt;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="daftar">
+      <li><a onclick="pagehome()" href="#">Home</a></li>
+      <li><a onclick="skill()" href="#">Skills</a></li>
+      <li><a onclick="meals()" href="#">Meals</a></li>
+    </ul>
+    <div class="view-title">
+        <p>Initial Title</p>
+      <div id="tombol">
+        <button onclick="dataHeading()" data="It Changes!">INITIAL BUTTON</button>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    function dataHeading() {
+      if(document.querySelector("div.view-title p").innerHTML == "Initial Title"){
+        document.querySelector("div.view-title p").innerHTML = $("div.view-title button").attr("data")
+      } else {
+        document.querySelector("div.view-title p").innerHTML = "Initial Title"
+      }
+    }
+
+    function pagehome() {
+      document.getElementById("tombol").innerHTML = `<button onclick="dataHeading()" data="It Changes!">INITIAL BUTTON</button>`
+    }
+
+
+    function dataURL() {
+      if(document.querySelector("div.view-title p").innerHTML == "Initial Title"){
+        document.querySelector("div.view-title p").innerHTML = localStorage.getItem("meals")
+      } else {
+        document.querySelector("div.view-title p").innerHTML = "Initial Title"
+      }
+    }
+
+    function skill() {
+      document.getElementById("tombol").innerHTML = `<button onclick="dataURL()" data="It Changes!">SKILL</button>`
+    }
+
+    function meals() {
+      document.getElementById("tombol").innerHTML = `<button onclick="dataMeals()" data="It Changes!">MEALS</button>`
+    }
+
+    $(document).ready(function() {
+      $.ajax({
+        url: "http://localhost:3000/",
+        type: "GET",
+        success: function(result) {
+          localStorage.setItem("meals", result)
+        }
+      })
+    })
+
+    function dataMeals() {
+      var meals = localStorage.getItem("meals").split(",")
+      var rand = Math.floor(Math.random()*5)
+      document.querySelector('div.view-title p').innerHTML = meals[rand]
+    }
+  </script>
+
+</html>
